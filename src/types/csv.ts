@@ -12,4 +12,8 @@ export interface PaginationState {
   pageIndex: number;
   pageSize: number;
   totalCount: number;
+}
+
+export interface CSVUploadProps {
+  onDataLoaded: (data: CSVData[]) => void;
 } 
