@@ -31,12 +31,14 @@ A modern web application built with React, TypeScript, and Vite for managing and
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd st-engineering-app
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -44,18 +46,20 @@ yarn install
 ```
 
 3. Create a `.env` file in the root directory and add your environment variables:
+
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://0.0.0.0:3000
 ```
 
 4. Start the development server:
+
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-The application will be available at `http://localhost:5173`
+The application will be available at `http://0.0.0.0:5173`
 
 ## Available Scripts
 
