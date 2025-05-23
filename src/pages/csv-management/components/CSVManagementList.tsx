@@ -55,6 +55,7 @@ const CSVManagementList = () => {
 
     return (
         <div className="relative">
+            <h1 className="font-bold text-2xl my-2 text-gray-600">My Files & Assets</h1>
             <CSVManagementFilter />
             <TableBuilder<CSVDTO>
                 rowKey='_id'

@@ -1,12 +1,17 @@
 import { InboxOutlined } from '@ant-design/icons';
 import { Progress, Upload, message } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { postCSVAPI, postMultipleCSVAPI } from '../apis/csv/csv';
 import type { CSVUploadProps, UploadProgress } from '../types/csv';
 
 const { Dragger } = Upload;
+
+interface ApiErrorResponse {
+  message: string;
+}
 
 const CSVUpload: React.FC<CSVUploadProps> = () => {
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
@@ -32,13 +37,11 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
       toast.success('Upload successful!');
     } catch (error) {
       let errMessage = 'Upload failed. Please try again.';
-      if (
-        typeof error === 'object' &&
-        error !== null &&
-        'response' in error &&
-        typeof (error).response?.data?.message === 'string'
-      ) {
-        errMessage = (error).response.data.message;
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data as ApiErrorResponse;
+        if (errorData.message) {
+          errMessage = errorData.message;
+        }
       }
       setUploadProgress({
         status: 'error',
