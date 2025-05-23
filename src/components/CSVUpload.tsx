@@ -1,4 +1,5 @@
 import { InboxOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { Progress, Upload, message } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import { AxiosError } from 'axios';
@@ -14,6 +15,7 @@ interface ApiErrorResponse {
 }
 
 const CSVUpload: React.FC<CSVUploadProps> = () => {
+  const queryClient = useQueryClient();
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
     status: 'idle',
     progress: 0,
@@ -35,6 +37,8 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
 
       setUploadProgress({ status: 'success', progress: 100 });
       toast.success('Upload successful!');
+      // Invalidate the csvList query to trigger a refetch
+      queryClient.invalidateQueries({ queryKey: ['csvList'] });
     } catch (error) {
       let errMessage = 'Upload failed. Please try again.';
       if (error instanceof AxiosError && error.response?.data) {

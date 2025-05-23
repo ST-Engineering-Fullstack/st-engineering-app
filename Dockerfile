@@ -13,8 +13,10 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Create .env file
-RUN echo "VITE_API_URL=http://localhost:4000/api" > .env
+# Create .env file with localhost URL for browser requests
+RUN echo "VITE_PORT=3002" > .env && \
+    echo "VITE_APP_TITLE=ST Engineering App" >> .env && \
+    echo "VITE_API_URL=http://localhost:4000/api" >> .env
 
 # Build the app
 RUN npm run build
