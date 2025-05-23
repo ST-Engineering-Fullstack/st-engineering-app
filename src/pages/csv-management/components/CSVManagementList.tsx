@@ -50,9 +50,6 @@ const CSVManagementList = () => {
         refetchOnReconnect: true,
     });
 
-    console.log('CSVManagementList data:', data);
-
-
     return (
         <div className="relative">
             <h1 className="font-bold text-2xl my-2 text-gray-600">My Files & Assets</h1>
@@ -65,7 +62,7 @@ const CSVManagementList = () => {
             />
             <CustomTablePagination
                 totalItems={data?.data?.total || 0}
-                pageSize={queryParams.limit}
+                pageSize={queryParams.totalPages}
                 queryKey={PARAM_FIELD.CURRENT_PAGE}
                 isScrollAfterPageChange
             />

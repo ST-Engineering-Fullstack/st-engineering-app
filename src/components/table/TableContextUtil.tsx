@@ -1,7 +1,6 @@
 import queryString from 'query-string';
 import { createContext, useContext, useState, type FC, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PARAM_FIELD } from '../../utils/enum/param-field.enum';
 import { SORT_DIRECTION } from '../../utils/enum/sort-direction.enum';
 
 interface ITableContextUtil {
@@ -76,8 +75,6 @@ export const TableUtilProvider: FC<TableProviderProps> = ({ children }) => {
         setSortField(newField);
         setSortOrder(newSortOrder);
 
-        params[PARAM_FIELD.ORDER_BY] = newField;
-        params[PARAM_FIELD.SORT_DIRECTION] = newSortOrder;
         navigate({ search: queryString.stringify(params) });
     };
 

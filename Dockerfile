@@ -13,6 +13,9 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Create .env file
+RUN echo "VITE_API_URL=http://localhost:4000/api" > .env
+
 # Build the app
 RUN npm run build
 
@@ -22,8 +25,8 @@ FROM nginx:1.25.2-alpine-slim
 # Copy the built files to nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx config if needed
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
