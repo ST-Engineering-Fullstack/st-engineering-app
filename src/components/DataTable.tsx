@@ -31,7 +31,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data: initialData, loading
       setData(response.data);
       setPagination(prev => ({
         ...prev,
-        total: response.total,
+        total: response?.total,
       }));
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -49,7 +49,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data: initialData, loading
       setPagination({
         current: newPagination.current,
         pageSize: newPagination.pageSize,
-        total: pagination.total,
+        total: pagination?.total,
       });
     }
   };

@@ -1,68 +1,76 @@
 import { InboxOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import { message, Progress, Upload } from 'antd';
+import { Progress, Upload, message } from 'antd';
+import type { RcFile, UploadProps } from 'antd/es/upload';
 import { useState } from 'react';
-import { csvService } from '../services/csvService';
+import { toast } from 'react-toastify';
+import { postCSVAPI, postMultipleCSVAPI } from '../apis/csv/csv';
 import type { CSVUploadProps, UploadProgress } from '../types/csv';
 
 const { Dragger } = Upload;
 
-const CSVUpload: React.FC<CSVUploadProps> = ({ onDataLoaded }) => {
+const CSVUpload: React.FC<CSVUploadProps> = () => {
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
     status: 'idle',
     progress: 0,
   });
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async (files: RcFile | RcFile[]): Promise<void> => {
     try {
-      // Validate CSV file
       setUploadProgress({ status: 'uploading', progress: 0 });
-      const validation = await csvService.validateCSV(file);
-      
-      if (!validation.isValid) {
-        setUploadProgress({
-          status: 'error',
-          progress: 0,
-          message: validation.errors.join(', '),
-        });
-        message.error('Invalid CSV file: ' + validation.errors.join(', '));
-        return;
+
+      if (Array.isArray(files)) {
+        if (files.length === 1) {
+          await postCSVAPI(files[0]);
+        } else {
+          await postMultipleCSVAPI(files);
+        }
+      } else {
+        await postCSVAPI(files);
       }
 
-      // Upload CSV file
-      await csvService.uploadCSV(file, (progress) => {
-        setUploadProgress({ status: 'uploading', progress });
-      });
-
-      // Get initial data
-      const { data } = await csvService.getCSVData({ page: 1, pageSize: 10 });
-      onDataLoaded(data);
-      
       setUploadProgress({ status: 'success', progress: 100 });
-      message.success('CSV file uploaded successfully');
+      toast.success('Upload successful!');
     } catch (error) {
+      let errMessage = 'Upload failed. Please try again.';
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'response' in error &&
+        typeof (error).response?.data?.message === 'string'
+      ) {
+        errMessage = (error).response.data.message;
+      }
       setUploadProgress({
         status: 'error',
         progress: 0,
-        message: error instanceof Error ? error.message : 'Upload failed',
+        message: errMessage,
       });
-      message.error('Failed to upload CSV file');
+      toast.error(errMessage);
     }
   };
 
   const props: UploadProps = {
-    name: 'file',
-    multiple: false,
+    name: 'files',
+    multiple: true,
     accept: '.csv',
     showUploadList: false,
-    beforeUpload: (file) => {
-      const isCSV = file.type === 'text/csv' || file.name.endsWith('.csv');
-      if (!isCSV) {
+    beforeUpload: (file, fileList) => {
+      // Validate all files are CSV
+      const invalidFile = fileList.find(
+        (f) => f.type !== 'text/csv' && !f.name.endsWith('.csv')
+      );
+      if (invalidFile) {
         message.error('You can only upload CSV files!');
         return Upload.LIST_IGNORE;
       }
-      handleUpload(file);
-      return false;
+
+      // Only process the upload if this is the last file in the list
+      // This ensures we only call handleUpload once
+      if (file === fileList[fileList.length - 1]) {
+        handleUpload(fileList);
+      }
+
+      return false; // prevent auto upload by Ant Design
     },
   };
 
@@ -72,10 +80,9 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataLoaded }) => {
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Click or drag CSV file to this area to upload</p>
+        <p className="ant-upload-text">Click or drag CSV files to this area to upload</p>
         <p className="ant-upload-hint">
-          Support for a single CSV file upload. Strictly prohibited from uploading company data or other
-          banned files.
+          Support for single or multiple CSV file uploads. Strictly prohibited from uploading company data or other banned files.
         </p>
       </Dragger>
 

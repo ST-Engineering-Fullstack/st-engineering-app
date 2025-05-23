@@ -1,3 +1,5 @@
+import type { CSV } from "../apis/csv/response/csv.response";
+
 export interface CSVData {
   [key: string]: string | number;
 }
@@ -15,5 +17,5 @@ export interface PaginationState {
 }
 
 export interface CSVUploadProps {
-  onDataLoaded: (data: CSVData[]) => void;
-} 
+  onDataLoaded?: (file: CSV) => void;
+}

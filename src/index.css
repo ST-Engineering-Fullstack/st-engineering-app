@@ -1,3 +1,224 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hover-scrollbar {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  .hover-scrollbar::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  .hover-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  .hover-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .custom-horizontal-scrollbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .custom-vertical-scrollbar {
+    overflow-y: auto;
+  }
+
+  .custom-horizontal-scrollbar::-webkit-scrollbar,
+  .custom-vertical-scrollbar::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  .custom-horizontal-scrollbar::-webkit-scrollbar-thumb,
+  .custom-vertical-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .divider {
+    @apply my-1 h-px bg-gray-100 dark:bg-gray-600;
+  }
+
+  .lang-switcher-scrollbar {
+    overflow-y: auto;
+  }
+
+  .lang-switcher-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .lang-switcher-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .lang-switcher-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888;
+  }
+
+  @-moz-document url-prefix('') {
+    .lang-switcher-scrollbar {
+      scrollbar-color: #888 transparent;
+      scrollbar-width: thin;
+    }
+  }
+
+  .custom-shadow-sidebar {
+    @apply shadow-[0_4px_6px_0_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.1)];
+  }
+
+  .default-shadow {
+    @apply shadow-[0_2px_4px_-2px_rgba(0,0,0,0.05),0_4px_6px_-1px_rgba(0,0,0,0.1)];
+  }
+
+  th.ant-table-cell {
+    padding: 0 !important;
+  }
+
+  th.ant-table-selection-column {
+    background-color: #f2100e !important;
+    border-start-start-radius: 0 !important;
+  }
+
+  .otp-container:focus-within {
+    outline: 1px solid #f2100e !important;
+    border-radius: 8px;
+  }
+
+  .hover-scrollbar {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  .hover-scrollbar::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  .hover-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  .hover-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .card-hover-scale-105 {
+    @apply transform cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-slate-100;
+  }
+}
+
+.ant-select-selector {
+  background: #f9fafb !important;
+}
+
+.ant-select-selector:hover {
+  border-color: #d9d9d9 !important;
+}
+
+.ant-select-selector:focus-within {
+  border-color: #f2100e !important;
+  box-shadow: 0 0 0 1px #f2100e !important;
+  outline: none !important;
+}
+
+.ant-table-row-selected > .ant-table-cell {
+  background-color: #fddddd !important;
+}
+
+.ant-table-row-selected:hover > .ant-table-cell {
+  background-color: #fddddd !important;
+}
+
+.ant-checkbox-wrapper .ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #f2100e !important;
+}
+
+.ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #f2100e;
+  border-color: #f2100e;
+}
+
+.ant-checkbox-checked:hover .ant-checkbox-inner {
+  background-color: #f2100e !important;
+  border-color: #f2100e !important;
+}
+
+.ant-checkbox-indeterminate .ant-checkbox-inner:after {
+  background-color: #f2100e;
+}
+
+.ant-spin-dot-item {
+  background-color: #f2100e !important;
+}
+
+.ant-upload-drag-icon span {
+  color: #f2100e !important;
+}
+
+.ant-upload.ant-upload-drag {
+  border-color: #f2100e !important;
+  border: 1px solid #f2100e !important;
+  padding: 40px 0;
+}
+
+/* antd pagination*/
+.ant-pagination {
+  border-radius: 4px;
+}
+
+.ant-pagination .ant-pagination-prev {
+  margin-right: 0px;
+  border-radius: 0;
+  border-color: #f2100e;
+}
+.ant-pagination .ant-pagination-item {
+  margin-right: 0px;
+  border-radius: 0;
+}
+
+.ant-pagination .ant-pagination-item:hover a {
+  border: 1px solid #f2100e !important;
+}
+
+.ant-pagination .ant-pagination-item:hover {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.ant-pagination .ant-pagination-item a {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  border-radius: 0;
+  border-color: #f2100e !important;
+}
+
+.ant-pagination .ant-pagination-item-active a {
+  color: #f2100e !important;
+  font-weight: 400;
+}
