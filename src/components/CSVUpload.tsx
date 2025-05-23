@@ -4,7 +4,6 @@ import { Progress, Upload, message } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import { postCSVAPI, postMultipleCSVAPI } from '../apis/csv/csv';
 import { CSV_UPLOAD_STATUS } from '../enum/csv/csv-upload-status.enum';
 import type { CSVUploadProps, UploadProgress } from '../types/csv';
@@ -37,7 +36,6 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
       }
 
       setUploadProgress({ status: CSV_UPLOAD_STATUS.SUCCESS, progress: 100 });
-      toast.success('Upload successful!');
       queryClient.invalidateQueries({ queryKey: ['csvList'] });
     } catch (error) {
       let errMessage = 'Upload failed. Please try again.';
@@ -52,7 +50,6 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
         progress: 0,
         message: errMessage,
       });
-      toast.error(errMessage);
     }
   };
 
