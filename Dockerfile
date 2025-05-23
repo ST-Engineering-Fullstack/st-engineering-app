@@ -15,8 +15,7 @@ COPY . .
 
 # Create .env file with 0.0.0.0 URL for browser requests
 RUN echo "VITE_PORT=3002" > .env && \
-    echo "VITE_APP_TITLE=ST Engineering App" >> .env && \
-    echo "VITE_API_URL=http://0.0.0.0:4000/api" >> .env
+    echo "VITE_APP_TITLE=ST Engineering App" >> .env
 
 # Build the app
 RUN npm run build
