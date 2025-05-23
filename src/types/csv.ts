@@ -1,21 +1,15 @@
 import type { CSV } from "../apis/csv/response/csv.response";
+import { CSV_UPLOAD_STATUS } from "../enum/csv/csv-upload-status.enum";
 
 export interface CSVData {
   [key: string]: string | number;
 }
 
 export interface UploadProgress {
-  status: 'idle' | 'uploading' | 'success' | 'error';
+  status: CSV_UPLOAD_STATUS.IDLE | CSV_UPLOAD_STATUS.UPLOADING | CSV_UPLOAD_STATUS.SUCCESS | CSV_UPLOAD_STATUS.ERROR;
   progress: number;
   message?: string;
 }
-
-export interface PaginationState {
-  pageIndex: number;
-  pageSize: number;
-  totalCount: number;
-}
-
 export interface CSVUploadProps {
   onDataLoaded?: (file: CSV) => void;
 }

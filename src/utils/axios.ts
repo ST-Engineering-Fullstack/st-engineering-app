@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Always use relative path for Docker/Nginx proxy
 const API_BASE_URL = '/api';
 
 const Axios = axios.create({

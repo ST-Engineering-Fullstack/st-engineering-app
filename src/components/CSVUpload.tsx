@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { postCSVAPI, postMultipleCSVAPI } from '../apis/csv/csv';
+import { CSV_UPLOAD_STATUS } from '../enum/csv/csv-upload-status.enum';
 import type { CSVUploadProps, UploadProgress } from '../types/csv';
 
 const { Dragger } = Upload;
@@ -17,13 +18,13 @@ interface ApiErrorResponse {
 const CSVUpload: React.FC<CSVUploadProps> = () => {
   const queryClient = useQueryClient();
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
-    status: 'idle',
+    status: CSV_UPLOAD_STATUS.IDLE,
     progress: 0,
   });
 
   const handleUpload = async (files: RcFile | RcFile[]): Promise<void> => {
     try {
-      setUploadProgress({ status: 'uploading', progress: 0 });
+      setUploadProgress({ status: CSV_UPLOAD_STATUS.UPLOADING, progress: 0 });
 
       if (Array.isArray(files)) {
         if (files.length === 1) {
@@ -35,9 +36,8 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
         await postCSVAPI(files);
       }
 
-      setUploadProgress({ status: 'success', progress: 100 });
+      setUploadProgress({ status: CSV_UPLOAD_STATUS.SUCCESS, progress: 100 });
       toast.success('Upload successful!');
-      // Invalidate the csvList query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ['csvList'] });
     } catch (error) {
       let errMessage = 'Upload failed. Please try again.';
@@ -48,7 +48,7 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
         }
       }
       setUploadProgress({
-        status: 'error',
+        status: CSV_UPLOAD_STATUS.ERROR,
         progress: 0,
         message: errMessage,
       });
@@ -62,7 +62,6 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
     accept: '.csv',
     showUploadList: false,
     beforeUpload: (file, fileList) => {
-      // Validate all files are CSV
       const invalidFile = fileList.find(
         (f) => f.type !== 'text/csv' && !f.name.endsWith('.csv')
       );
@@ -71,13 +70,11 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
         return Upload.LIST_IGNORE;
       }
 
-      // Only process the upload if this is the last file in the list
-      // This ensures we only call handleUpload once
       if (file === fileList[fileList.length - 1]) {
         handleUpload(fileList);
       }
 
-      return false; // prevent auto upload by Ant Design
+      return false;
     },
   };
 
@@ -93,17 +90,17 @@ const CSVUpload: React.FC<CSVUploadProps> = () => {
         </p>
       </Dragger>
 
-      {uploadProgress.status !== 'idle' && (
+      {uploadProgress.status !== CSV_UPLOAD_STATUS.IDLE && (
         <div className="px-4">
           <Progress
             percent={uploadProgress.progress}
-            status={uploadProgress.status === 'error' ? 'exception' : undefined}
+            status={uploadProgress.status === CSV_UPLOAD_STATUS.ERROR ? 'exception' : undefined}
             className="mb-2"
           />
           <p className="text-sm text-gray-600">
-            {uploadProgress.status === 'uploading' && 'Uploading...'}
-            {uploadProgress.status === 'success' && 'Upload complete!'}
-            {uploadProgress.status === 'error' && uploadProgress.message}
+            {uploadProgress.status === CSV_UPLOAD_STATUS.UPLOADING && 'Uploading...'}
+            {uploadProgress.status === CSV_UPLOAD_STATUS.SUCCESS && 'Upload complete!'}
+            {uploadProgress.status === CSV_UPLOAD_STATUS.ERROR && uploadProgress.message}
           </p>
         </div>
       )}
